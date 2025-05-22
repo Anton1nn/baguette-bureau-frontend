@@ -1,184 +1,177 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <title>Connexion WhatsApp - Baguette & Bureau</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <style>
-    :root {
-      --bg: #faf7f0;
-      --primary: #b8860b;
-      --txt: #3a3422;
-      --error: #b82020;
-      --white: #fff;
-    }
-    html, body {
-      height: 100%;
-      margin: 0;
-      padding: 0;
-      background: var(--bg);
-      font-family: 'Segoe UI', Arial, sans-serif;
-      color: var(--txt);
-    }
-    body, .center-container {
-      height: 100vh;
-      width: 100vw;
-      box-sizing: border-box;
-    }
-    .center-container {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-    }
-    .title {
-      font-size: 2rem;
-      font-weight: bold;
-      color: var(--primary);
-      margin-bottom: 16px;
-      letter-spacing: 0.5px;
-    }
-    .instruction {
-      font-size: 1.1rem;
-      margin-bottom: 32px;
-      text-align: center;
-    }
-    .qrcode {
-      width: 210px;
-      height: 210px;
-      background: var(--white);
-      border: 2px solid var(--primary);
-      border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(184,134,11,0.05);
-      object-fit: contain;
-      margin-bottom: 30px;
-      display: block;
-    }
-    .loader {
-      width: 44px;
-      height: 44px;
-      border: 5px solid #f4e6cb;
-      border-radius: 50%;
-      border-top: 5px solid var(--primary);
-      animation: spin 1s linear infinite;
-      margin-bottom: 50px;
-      margin-top: 11px;
-    }
-    @keyframes spin {
-      to { transform: rotate(360deg);}
-    }
-    .error-msg {
-      color: var(--error);
-      background: #fff5f3;
-      border: 1px solid #fad3d3;
-      border-radius: 8px;
-      padding: 12px 24px 11px 24px;
-      font-size: 1.08rem;
-      margin-bottom: 30px;
-      text-align: center;
-    }
-    .btn {
-      background: var(--primary);
-      color: var(--bg);
-      font-size: 1.13rem;
-      font-weight: 600;
-      padding: 13px 36px;
-      border: none;
-      border-radius: 30px;
-      cursor: pointer;
-      transition: background 0.15s, transform 0.12s;
-      letter-spacing: 0.2px;
-      box-shadow: 0 2px 8px rgba(184,134,11,0.04);
-    }
-    .btn:hover,
-    .btn:focus {
-      background: #a17608;
-      transform: scale(1.036);
-      outline: none;
-      color: var(--white);
-    }
-    .btn:disabled {
-      background: #e3c988;
-      color: #fffbe8;
-      cursor: not-allowed;
-    }
-    @media (max-width: 600px) {
-      .center-container {
-        padding: 18px 6vw;
-      }
-      .title { font-size: 1.3rem; }
-      .instruction { font-size: 1rem; }
-      .qrcode { width: 150px; height: 150px; }
-      .btn { width: 100%; font-size: 1.08rem; }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <title>Configurer WhatsApp</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Google Fonts pour une police épurée -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2F3640;
+            --secondary: #ffffff;
+            --accent: #3498db;
+            --error: #e74c3c;
+            --loader: #8f98a9;
+        }
+        body {
+            background: var(--secondary);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Inter', Arial, sans-serif;
+            margin: 0;
+        }
+        .container {
+            background: #fff;
+            border-radius: 14px;
+            box-shadow: 0 4px 24px rgba(47,54,64,0.06);
+            padding: 2rem 2.5rem 2.5rem 2.5rem;
+            max-width: 370px;
+            width: 95vw;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+        }
+        h1 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary);
+            text-align: center;
+        }
+        .loader {
+            border: 5px solid var(--loader);
+            border-top: 5px solid var(--accent);
+            border-radius: 50%;
+            width: 56px;
+            height: 56px;
+            animation: spin 1s linear infinite;
+            margin: 2rem 0;
+        }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        .qr-img {
+            width: 220px;
+            max-width: 70vw;
+            height: 220px;
+            object-fit: contain;
+            border-radius: 10px;
+            background: #f7f7fa;
+            display: block;
+        }
+        .error {
+            color: var(--error);
+            background: #fae7e6;
+            border-radius: 6px;
+            padding: 0.7em 1em;
+            font-size: 1rem;
+            margin: 1em 0 0 0;
+            text-align: center;
+        }
+        button {
+            width: 100%;
+            padding: 1em 0;
+            font-size: 1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 7px;
+            background: var(--accent);
+            color: #fff;
+            transition: background 0.18s;
+            cursor: pointer;
+            margin-top: .5rem;
+            opacity: 0.8;
+        }
+        button:enabled {
+            opacity: 1;
+        }
+        button:disabled {
+            background: #b1cdf4;
+            cursor: not-allowed;
+        }
+        @media (max-width: 500px) {
+            .container {
+                padding: 1rem 0.5rem 2rem 0.5rem;
+            }
+            .qr-img {
+                width: 95vw;
+                max-width: 95vw;
+                height: auto;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="center-container">
-    <div class="title">Connectez votre WhatsApp</div>
-    <div class="instruction">
-      Scannez ce QR code avec votre WhatsApp pour connecter votre numéro
+    <div class="container">
+        <h1>Connexion WhatsApp</h1>
+        <div id="qr-container">
+            <div class="loader" id="qr-loader"></div>
+        </div>
+        <button id="connected-btn" disabled>C’est connecté&nbsp;!</button>
+        <div id="error-msg" class="error" style="display: none"></div>
     </div>
-    <div id="qrcode-container">
-      <div class="loader" id="loader"></div>
-    </div>
-    <div class="error-msg" id="error-msg" style="display:none;"></div>
-    <button class="btn" id="connect-btn" style="margin-top:9px;" disabled>C’est connecté&nbsp;!</button>
-  </div>
-  <script>
-    const qrContainer = document.getElementById('qrcode-container');
-    const errorMsg = document.getElementById('error-msg');
-    const btn = document.getElementById('connect-btn');
-    const loader = document.getElementById('loader');
-
-    function escapeHTML(str) {
-      return str.replace(/[&<>"']/g, function (m) {
-        return ({
-          '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
-        })[m];
-      });
-    }
-
-    async function loadQrCode() {
-      errorMsg.style.display = 'none';
-      btn.disabled = true;
-      if (loader) loader.style.display = 'block';
-
-      const jwt = localStorage.getItem('jwt_token');
-      if (!jwt) {
-        qrContainer.innerHTML = '';
-        errorMsg.textContent = "Impossible de générer le QR code, veuillez réessayer plus tard.";
-        errorMsg.style.display = 'block';
-        return;
-      }
-      try {
-        const res = await fetch(
-          "https://baguette-bureau-backend.onrender.com/whatsapp/qrcode",
-          { method: "GET", headers: { "Authorization": `Bearer ${jwt}` } }
-        );
-        if (!res.ok) {
-          throw new Error();
+    <script>
+        // Helpers
+        function showLoader() {
+            document.getElementById('qr-container').innerHTML = '<div class="loader" id="qr-loader"></div>';
         }
-        const data = await res.json();
-        if (data && data.qrcode) {
-          qrContainer.innerHTML = `<img src="data:image/png;base64,${escapeHTML(data.qrcode)}" alt="QR WhatsApp" class="qrcode">`;
-          btn.disabled = false;
-        } else {
-          throw new Error();
+        function showQR(imgSrc) {
+            document.getElementById('qr-container').innerHTML = `<img src="${imgSrc}" alt="QR Code WhatsApp" class="qr-img" id="qr-img" />`;
         }
-      } catch (e) {
-        qrContainer.innerHTML = '';
-        errorMsg.textContent = "Impossible de générer le QR code, veuillez réessayer plus tard.";
-        errorMsg.style.display = 'block';
-        btn.disabled = true;
-      }
-    }
+        function showError(msg) {
+            document.getElementById('error-msg').style.display = 'block';
+            document.getElementById('error-msg').textContent = msg;
+            document.getElementById('connected-btn').disabled = true;
+            showLoader();
+        }
+        function hideError() {
+            document.getElementById('error-msg').style.display = 'none';
+            document.getElementById('error-msg').textContent = '';
+        }
+        // Logic
+        (function() {
+            const clientId = localStorage.getItem('client_id');
+            const jwtToken = localStorage.getItem('jwt_token');
+            const btn = document.getElementById('connected-btn');
 
-    btn.addEventListener('click', () => {
-      window.location.href = "dashboard.html";
-    });
+            if (!clientId || !jwtToken) {
+                showError("Client ID ou authentification manquante. Veuillez reconnecter votre compte.");
+                return;
+            }
+            hideError();
+            showLoader();
 
-    window.onload = loadQrCode;
-  </script>
+            fetch(`https://baguette-bureau-backend.onrender.com/whatsapp/qr/${encodeURIComponent(clientId)}`, {
+                headers: {
+                    'Authorization': 'Bearer ' + jwtToken
+                }
+            })
+            .then(async (res) => {
+                if (!res.ok) {
+                    throw new Error(await res.text() || "Erreur lors du chargement du QR code.");
+                }
+                return res.json();
+            })
+            .then((data) => {
+                if (!data.qr) {
+                    throw new Error("QR code manquant dans la réponse du serveur.");
+                }
+                // data.qr doit être un Data URL (ex: 'data:image/png;base64,...') ou une URL d'image
+                showQR(data.qr);
+                btn.disabled = false;
+                hideError();
+            })
+            .catch((err) => {
+                showError("Une erreur est survenue lors du chargement du QR code :\n" + (err.message || err));
+            });
+
+            btn.addEventListener('click', function() {
+                window.location.href = "dashboard.html";
+            });
+        })();
+    </script>
 </body>
 </html>
