@@ -1,0 +1,231 @@
+<!-- dashboard.html -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Baguette & Bureau - Tableau de bord</title>
+    <style>
+        :root {
+            --primary: #B8860B;
+            --accent: #ffe6aa;
+            --background: #f7f6f2;
+            --card: #fff;
+            --text: #222;
+            --border: #e3dfd9;
+            --status-envoye: #3CB371;
+            --status-attente: #E6B800;
+            --status-erreur: #B22222;
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background: var(--primary);
+            color: #fff;
+            padding: 1.2rem;
+            text-align: center;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 2rem;
+            letter-spacing: 1px;
+        }
+
+        main {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        section {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            box-shadow: 0 2px 6px #eee;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+
+        .btn {
+            padding: 0.5em 1.2em;
+            background: var(--primary);
+            color: #fff;
+            text-decoration: none;
+            border: none;
+            border-radius: 4px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn:hover {
+            background: #c69700;
+        }
+
+        /* Clients Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 0.5rem;
+        }
+        th, td {
+            padding: 0.7em 0.5em;
+            text-align: left;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f8f7;
+        }
+        th {
+            background: var(--accent);
+            font-weight: bold;
+        }
+
+        /* Commande récente badges */
+        .status-badge {
+            padding: 0.2em 0.8em;
+            border-radius: 16px;
+            color: #fff;
+            font-size: 0.95em;
+            font-weight: bold;
+            display: inline-block;
+        }
+        .status-envoye  { background: var(--status-envoye);}
+        .status-attente { background: var(--status-attente);}
+        .status-erreur  { background: var(--status-erreur);}
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            main {
+                padding: 0 0.3rem;
+            }
+            th, td {
+                font-size: 0.98em;
+            }
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+        @media (max-width: 420px) {
+            h1 {
+                font-size: 1.2em;
+            }
+        }
+
+        footer {
+            text-align: center;
+            color: #888;
+            padding: 1.2rem 0 0.5rem 0;
+            background: transparent;
+            font-size: 0.95em;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Tableau de bord - Baguette & Bureau</h1>
+    </header>
+    <main>
+        <!-- Liste des clients -->
+        <section>
+            <div class="section-header">
+                <h2>Clients professionnels</h2>
+                <button class="btn">Ajouter un client</button>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Email</th>
+                        <th style="text-align:center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Restaurant Le Soleil</td>
+                        <td>le.soleil@exemple.com</td>
+                        <td style="text-align:center">
+                            <button class="btn">Voir commandes</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Cantine du Collège</td>
+                        <td>cantine.college@exemple.com</td>
+                        <td style="text-align:center">
+                            <button class="btn">Voir commandes</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Hôtel Paradis</td>
+                        <td>contact@hotelparadis.fr</td>
+                        <td style="text-align:center">
+                            <button class="btn">Voir commandes</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Commandes récentes -->
+        <section>
+            <div class="section-header">
+                <h2>Commandes récentes</h2>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Client</th>
+                        <th>Date de livraison</th>
+                        <th>Statut</th>
+                        <th>Bon de commande</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Restaurant Le Soleil</td>
+                        <td>2024-07-11</td>
+                        <td><span class="status-badge status-envoye">envoyé</span></td>
+                        <td>
+                            <a href="bons_commandes/bon_commande_restaurant_le_soleil_2024-07-11.pdf" class="btn" download>Télécharger</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Cantine du Collège</td>
+                        <td>2024-07-09</td>
+                        <td><span class="status-badge status-attente">en attente</span></td>
+                        <td>
+                            <a href="#" class="btn btn-disabled" style="background:#ccc;pointer-events:none;">Indisponible</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Hôtel Paradis</td>
+                        <td>2024-07-07</td>
+                        <td><span class="status-badge status-erreur">erreur</span></td>
+                        <td>
+                            <a href="#" class="btn btn-disabled" style="background:#ccc;pointer-events:none;">Indisponible</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </main>
+    <footer>
+        &copy; 2024 Baguette & Bureau &mdash; Tous droits réservés.
+    </footer>
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Baguette & Bureau - Connexion WhatsApp</title>
+<style>
+  :root {
+    --primary: #b8860b;
+    --background: #faf7f0;
+    --card-bg: #fff;
+    --border: #ddd;
+    --success: #2d862d;
+    --error: #b22222;
+    --shadow: rgba(0,0,0,0.1);
+  }
+  body, html {
+    margin: 0; padding: 0;
+    height: 100%;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--background);
+    color: #222;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  #container {
+    background: var(--card-bg);
+    border-radius: 10px;
+    padding: 2rem 1.5rem;
+    max-width: 360px;
+    width: 100%;
+    box-shadow: 0 2px 6px var(--shadow);
+    text-align: center;
+  }
+  h1 {
+    color: var(--primary);
+    margin-bottom: 1rem;
+  }
+  button {
+    background: var(--primary);
+    border: none;
+    color: white;
+    padding: 0.75rem 1.2rem;
+    font-size: 1.1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.25s;
+    margin-bottom: 1rem;
+    width: 100%;
+  }
+  button:hover:not(:disabled) {
+    background: #a47906;
+  }
+  button:disabled {
+    background: #c5a93a88;
+    cursor: not-allowed;
+  }
+  #qrCode {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 1rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    display: none;
+  }
+  #message {
+    font-weight: 600;
+    font-size: 1rem;
+    min-height: 1.2em;
+  }
+  #message.success {
+    color: var(--success);
+  }
+  #message.error {
+    color: var(--error);
+  }
+  @media (max-width: 420px) {
+    #container {
+      padding: 1.2rem 1rem;
+      max-width: 95vw;
+    }
+  }
+</style>
+</head>
+<body>
+  <div id="container" role="main" aria-live="polite">
+    <h1>Connexion WhatsApp</h1>
+    <button id="connectBtn" aria-label="Se connecter à WhatsApp">Se connecter à WhatsApp</button>
+    <img id="qrCode" alt="QR Code WhatsApp à scanner" />
+    <div id="message" aria-live="assertive"></div>
+  </div>
+
+<script>
+  const connectBtn = document.getElementById('connectBtn');
+  const qrCodeImg = document.getElementById('qrCode');
+  const messageBox = document.getElementById('message');
+
+  let refreshIntervalId = null;
+
+  function getToken() {
+    return localStorage.getItem("token") || "";
+  }
+
+  async function fetchQrCode() {
+    messageBox.textContent = "";
+    qrCodeImg.style.display = "none";
+    connectBtn.disabled = true;
+    connectBtn.textContent = "Chargement...";
+
+    try {
+      const response = await fetch('/whatsapp/qr', {
+        method: 'GET',
+        headers: {
+          'Authorization': 'Bearer ' + getToken()
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error(`Erreur HTTP ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      if (!data || !data.qr_base64) {
+        throw new Error("QR code non disponible");
+      }
+
+      qrCodeImg.src = "data:image/png;base64," + data.qr_base64;
+      qrCodeImg.style.display = "block";
+      messageBox.textContent = "Connectez-vous via WhatsApp en scannant le QR code";
+      messageBox.className = "success";
+      connectBtn.textContent = "Actualiser le QR";
+      connectBtn.disabled = false;
+
+      // Quand QR affiché, démarre rafraichissement si pas déjà fait
+      if (!refreshIntervalId) {
+        refreshIntervalId = setInterval(fetchQrCode, 10000);
+      }
+
+    } catch (error) {
+      messageBox.textContent = "Échec de connexion : " + error.message;
+      messageBox.className = "error";
+      qrCodeImg.style.display = "none";
+      connectBtn.textContent = "Recommencer";
+      connectBtn.disabled = false;
+
+      // Stop refresh si erreur critique
+      if (refreshIntervalId) {
+        clearInterval(refreshIntervalId);
+        refreshIntervalId = null;
+      }
+    }
+  }
+
+  connectBtn.addEventListener('click', fetchQrCode);
+</script>
+</body>
+</html>
