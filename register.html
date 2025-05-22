@@ -1,196 +1,221 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Baguette & Bureau - Inscription</title>
-    <style>
-        :root {
-            --primary: #B8860B;
-            --background: #faf7f0;
-            --card: #fff;
-            --input: #f6f2e7;
-            --border: #e4deb8;
-        }
-        body {
-            background: var(--background);
-            font-family: 'Segoe UI', Arial, sans-serif;
-            margin: 0;
-            min-height: 100vh;
-        }
-        main {
-            min-height: 90vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .register-card {
-            background: var(--card);
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(180,158,48,0.06);
-            padding: 2.6rem 1.7rem 1.5rem 1.7rem;
-            max-width: 360px;
-            width: 100%;
-            border: 1px solid var(--border);
-            display: flex;
-            flex-direction: column;
-            gap: 1.2rem;
-        }
-        h1 {
-            text-align: center;
-            color: var(--primary);
-            font-size: 1.45em;
-            margin: 0;
-            letter-spacing: 1px;
-        }
-        label {
-            color: #444;
-            font-weight: 500;
-            display: block;
-            margin-bottom: 6px;
-        }
-        input[type="text"], input[type="email"], input[type="password"] {
-            width: 100%;
-            padding: 0.68em;
-            border-radius: 5px;
-            border: 1px solid var(--border);
-            background: var(--input);
-            font-size: 1em;
-            outline: none;
-            margin-bottom: 0.85em;
-            box-sizing: border-box;
-        }
-        input:focus {
-            border-color: var(--primary);
-        }
-        .btn {
-            padding: 0.67em;
-            width: 100%;
-            background: var(--primary);
-            color: #fff;
-            border: none;
-            font-size: 1em;
-            font-weight: 600;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background 0.15s;
-        }
-        .btn:hover {
-            background: #c7a740;
-        }
-        .login-link {
-            text-align: center;
-            margin-top: 0.7em;
-        }
-        .login-link a {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 500;
-        }
-        .login-link a:hover {
-            text-decoration: underline;
-        }
-        .message {
-            text-align: center;
-            font-size: 0.97em;
-            margin: 0.3em 0 -0.5em 0;
-            padding: 0.55em 0;
-            border-radius: 5px;
-        }
-        .message.success {
-            color: #228837;
-            background: #dcffe8;
-        }
-        .message.error {
-            color: #b81d1d;
-            background: #ffeeee;
-        }
-        @media (max-width: 420px) {
-            .register-card { padding: 1.1rem 0.6rem 1.2rem 0.6rem; }
-            h1 { font-size: 1.09em; }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Inscription - Baguette & Bureau</title>
+  <style>
+    :root {
+      --creme: #faf7f0;
+      --gold: #b8860b;
+      --grey: #554e36;
+      --border: #e4dcc0;
+      --error: #b82020;
+      --success: #388e3c;
+    }
+    body {
+      background: var(--creme);
+      margin: 0;
+      font-family: 'Segoe UI', 'Arial', sans-serif;
+      color: var(--grey);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .container {
+      max-width: 370px;
+      margin: 54px auto 0 auto;
+      padding: 34px 28px 28px 28px;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 2px 12px rgba(184,134,11,0.07);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    h1 {
+      color: var(--gold);
+      font-size: 2.1rem;
+      font-weight: 700;
+      margin-bottom: 7px;
+      letter-spacing: 1px;
+    }
+    .subtitle {
+      font-size: 1.00rem;
+      color: var(--grey);
+      margin-bottom: 28px;
+      text-align: center;
+    }
+    form {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 17px;
+    }
+    label {
+      font-size: 1rem;
+      margin-bottom: 4px;
+    }
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 11px 12px;
+      border: 1.2px solid var(--border);
+      border-radius: 7px;
+      font-size: 1rem;
+      background: #faf9f6;
+      color: var(--grey);
+      box-sizing: border-box;
+      transition: border 0.14s;
+    }
+    input:focus {
+      outline: none;
+      border: 1.5px solid var(--gold);
+      background: #fffbe8;
+    }
+    button {
+      background: var(--gold);
+      color: var(--creme);
+      font-size: 1.08rem;
+      font-weight: 600;
+      padding: 12px 0;
+      border: none;
+      border-radius: 50px;
+      margin-top: 12px;
+      cursor: pointer;
+      transition: background 0.18s, transform 0.1s;
+      letter-spacing: 0.4px;
+    }
+    button:hover, button:focus {
+      background: #a17608;
+      color: #fff;
+      transform: translateY(-1px) scale(1.018);
+      outline: none;
+    }
+    .message {
+      margin-top: 18px;
+      text-align: center;
+      font-size: 1.05rem;
+      padding: 10px 6px 8px 6px;
+      border-radius: 8px;
+      display: none;
+    }
+    .message.error {
+      background: #fff5f3;
+      color: var(--error);
+      border: 1px solid #fad3d3;
+      display: block;
+    }
+    .message.success {
+      background: #f3fff5;
+      color: var(--success);
+      border: 1px solid #a2e5bb;
+      display: block;
+    }
+    .footer {
+      text-align: center;
+      margin: 40px auto 10px auto;
+      font-size: 0.99rem;
+      color: var(--gold);
+      letter-spacing: 0.13px;
+      padding-bottom: 16px;
+    }
+    @media (max-width: 500px) {
+      .container {
+        margin-top: 24px;
+        padding: 18px 5vw 18px 5vw;
+      }
+      h1 {
+        font-size: 1.35rem;
+      }
+      .subtitle {
+        font-size: 0.98rem;
+      }
+      .footer {
+        font-size: 0.93rem;
+      }
+    }
+  </style>
 </head>
 <body>
-    <main>
-        <form class="register-card" id="registerForm" autocomplete="on">
-            <h1>Créer un compte</h1>
-            <div>
-                <label for="name">Nom</label>
-                <input type="text" id="name" name="name" required autocomplete="name">
-            </div>
-            <div>
-                <label for="email">Adresse e-mail</label>
-                <input type="email" id="email" name="email" required autocomplete="email">
-            </div>
-            <div>
-                <label for="password">Mot de passe</label>
-                <input type="password" id="password" name="password" required autocomplete="new-password">
-            </div>
-            <div>
-                <label for="confirm_password">Confirmer le mot de passe</label>
-                <input type="password" id="confirm_password" name="confirm_password" required autocomplete="new-password">
-            </div>
-            <button type="submit" class="btn">Créer mon compte</button>
-            <div class="message" id="message" style="display: none"></div>
-            <div class="login-link">
-                Vous avez déjà un compte ? <a href="login.html">Se connecter</a>
-            </div>
-        </form>
-    </main>
-    <script>
-        const registerForm = document.getElementById('registerForm');
-        const messageBox = document.getElementById('message');
+  <div class="container">
+    <h1>Baguette &amp; Bureau</h1>
+    <div class="subtitle">Inscrivez votre boulangerie pour automatiser vos commandes B2B via WhatsApp</div>
+    <form id="registerForm" autocomplete="on">
+      <div>
+        <label for="name">Nom</label>
+        <input type="text" name="name" id="name" required autocomplete="name">
+      </div>
+      <div>
+        <label for="email">Email</label>
+        <input type="email" name="email" id="email" required autocomplete="email">
+      </div>
+      <div>
+        <label for="password">Mot de passe</label>
+        <input type="password" name="password" id="password" required minlength="6" autocomplete="new-password">
+      </div>
+      <button type="submit">Créer mon compte</button>
+    </form>
+    <div id="message" class="message"></div>
+  </div>
+  <div class="footer">
+    © 2025 Baguette &amp; Bureau. Tous droits réservés.
+  </div>
+  <script>
+    const form = document.getElementById('registerForm');
+    const messageBox = document.getElementById('message');
 
-        registerForm.addEventListener('submit', async (event) => {
-            event.preventDefault();
-            messageBox.style.display = "none";
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      messageBox.style.display = 'none';
+      messageBox.textContent = '';
+      messageBox.className = 'message';
 
-            const name = registerForm.name.value.trim();
-            const email = registerForm.email.value.trim();
-            const password = registerForm.password.value;
-            const confirmPassword = registerForm.confirm_password.value;
+      const name = form.name.value.trim();
+      const email = form.email.value.trim();
+      const password = form.password.value;
 
-            // Vérifier que les deux mots de passe correspondent
-            if (password !== confirmPassword) {
-                messageBox.textContent = "Les mots de passe ne correspondent pas.";
-                messageBox.className = "message error";
-                messageBox.style.display = "block";
-                return;
-            }
+      if (!name || !email || !password) {
+        showMessage('Veuillez remplir tous les champs.', true);
+        return;
+      }
 
-            try {
-                const response = await fetch('/auth/register', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        name: name,
-                        email: email,
-                        password: password
-                    })
-                });
-
-                if (response.ok) {
-                    messageBox.textContent = "Inscription réussie, redirection en cours...";
-                    messageBox.className = "message success";
-                    messageBox.style.display = "block";
-                    setTimeout(() => {
-                        window.location.href = "login.html";
-                    }, 1800);
-                } else {
-                    const data = await response.json();
-                    messageBox.textContent = data.detail || "Erreur lors de l'inscription.";
-                    messageBox.className = "message error";
-                    messageBox.style.display = "block";
-                }
-            } catch (e) {
-                messageBox.textContent = "Erreur réseau. Merci de réessayer.";
-                messageBox.className = "message error";
-                messageBox.style.display = "block";
-            }
+      try {
+        const res = await fetch('https://baguette-bureau-backend.onrender.com/auth/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ name, email, password })
         });
-    </script>
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          let errorMsg = 'Erreur lors de l’inscription.';
+          if (data && data.error) {
+            errorMsg = data.error;
+          } else if (data && data.message) {
+            errorMsg = data.message;
+          }
+          showMessage(errorMsg, true);
+        } else {
+          showMessage('Inscription réussie ! Redirection en cours...', false);
+          setTimeout(() => {
+            window.location.href = 'configure.html';
+          }, 1200);
+        }
+      } catch (error) {
+        showMessage('Impossible de rejoindre le serveur. Veuillez réessayer plus tard.', true);
+      }
+    });
+
+    function showMessage(msg, isError) {
+      messageBox.textContent = msg;
+      messageBox.className = `message ${isError ? 'error' : 'success'}`;
+      messageBox.style.display = 'block';
+    }
+  </script>
 </body>
 </html>
