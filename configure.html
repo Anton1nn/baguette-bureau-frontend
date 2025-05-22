@@ -2,222 +2,183 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
+  <title>Connexion WhatsApp - Baguette & Bureau</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Configuration WhatsApp - Baguette & Bureau</title>
   <style>
     :root {
-      --creme: #faf7f0;
-      --gold: #b8860b;
-      --grey: #554e36;
-      --border: #e4dcc0;
+      --bg: #faf7f0;
+      --primary: #b8860b;
+      --txt: #3a3422;
+      --error: #b82020;
+      --white: #fff;
     }
-    body {
-      min-height: 100vh;
-      background: var(--creme);
+    html, body {
+      height: 100%;
       margin: 0;
       padding: 0;
+      background: var(--bg);
       font-family: 'Segoe UI', Arial, sans-serif;
-      color: var(--grey);
+      color: var(--txt);
+    }
+    body, .center-container {
+      height: 100vh;
+      width: 100vw;
+      box-sizing: border-box;
+    }
+    .center-container {
       display: flex;
       flex-direction: column;
-      align-items: center;
       justify-content: center;
-    }
-    .container {
-      background: #fff;
-      border-radius: 16px;
-      box-shadow: 0 2px 16px rgba(184,134,11,0.07);
-      padding: 36px 32px 30px 32px;
-      max-width: 370px;
-      text-align: center;
-      margin: 32px 0;
+      align-items: center;
     }
     .title {
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: var(--gold);
-      margin-bottom: 12px;
-      letter-spacing: 1px;
+      font-size: 2rem;
+      font-weight: bold;
+      color: var(--primary);
+      margin-bottom: 16px;
+      letter-spacing: 0.5px;
     }
-    .instructions {
-      font-size: 1.09rem;
-      margin-bottom: 26px;
-      color: var(--grey);
+    .instruction {
+      font-size: 1.1rem;
+      margin-bottom: 32px;
+      text-align: center;
     }
-    .qrcode-wrapper {
-      margin: 0 auto 20px auto;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      height: 260px;
-      justify-content: center;
-    }
-    .qrcode-img {
+    .qrcode {
+      width: 210px;
+      height: 210px;
+      background: var(--white);
+      border: 2px solid var(--primary);
       border-radius: 12px;
-      border: 2.5px solid var(--gold);
-      background: #fffbe8;
-      width: 200px;
-      height: 200px;
+      box-shadow: 0 2px 8px rgba(184,134,11,0.05);
       object-fit: contain;
-      box-shadow: 0 2px 8px rgba(184,134,11,0.04);
-      margin-bottom: 7px;
+      margin-bottom: 30px;
       display: block;
     }
     .loader {
-      display: inline-block;
-      width: 50px;
-      height: 50px;
-      border: 5px solid #fffbe8;
-      border-top: 5px solid var(--gold);
+      width: 44px;
+      height: 44px;
+      border: 5px solid #f4e6cb;
       border-radius: 50%;
+      border-top: 5px solid var(--primary);
       animation: spin 1s linear infinite;
-      margin-bottom: 9px;
+      margin-bottom: 50px;
+      margin-top: 11px;
     }
     @keyframes spin {
-      to { transform: rotate(360deg); }
+      to { transform: rotate(360deg);}
     }
-    .error {
-      margin-top: 5px;
-      color: #b82020;
+    .error-msg {
+      color: var(--error);
       background: #fff5f3;
       border: 1px solid #fad3d3;
       border-radius: 8px;
-      font-size: 1rem;
-      padding: 10px 0 7px 0;
-      min-height: 22px;
+      padding: 12px 24px 11px 24px;
+      font-size: 1.08rem;
+      margin-bottom: 30px;
+      text-align: center;
     }
     .btn {
-      margin-top: 23px;
-      width: 100%;
-      background: var(--gold);
-      color: var(--creme);
-      border: none;
-      border-radius: 25px;
-      font-size: 1.08rem;
+      background: var(--primary);
+      color: var(--bg);
+      font-size: 1.13rem;
       font-weight: 600;
-      padding: 13px;
+      padding: 13px 36px;
+      border: none;
+      border-radius: 30px;
       cursor: pointer;
-      box-shadow: 0 2px 8px rgba(184,134,11,0.04);
-      transition: background 0.16s, transform 0.10s;
+      transition: background 0.15s, transform 0.12s;
       letter-spacing: 0.2px;
+      box-shadow: 0 2px 8px rgba(184,134,11,0.04);
+    }
+    .btn:hover,
+    .btn:focus {
+      background: #a17608;
+      transform: scale(1.036);
+      outline: none;
+      color: var(--white);
     }
     .btn:disabled {
-      background: #e5c87a;
+      background: #e3c988;
+      color: #fffbe8;
       cursor: not-allowed;
     }
-    .btn:hover, .btn:focus {
-      background: #a17608;
-      color: #fff;
-      outline: none;
-      transform: translateY(-1px) scale(1.02);
-    }
-    @media (max-width: 500px) {
-      .container {
-        max-width: 95vw;
-        padding: 24px 3vw 20px 3vw;
+    @media (max-width: 600px) {
+      .center-container {
+        padding: 18px 6vw;
       }
-      .qrcode-img {
-        width: 150px;
-        height: 150px;
-      }
-      .qrcode-wrapper {
-        height: 180px;
-      }
-      .title {
-        font-size: 1.17rem;
-      }
+      .title { font-size: 1.3rem; }
+      .instruction { font-size: 1rem; }
+      .qrcode { width: 150px; height: 150px; }
+      .btn { width: 100%; font-size: 1.08rem; }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="title">Bienvenue sur Baguette &amp; Bureau !</div>
-    <div class="instructions">
-      Scannez le QR code ci-dessous pour connecter votre numéro WhatsApp à l'application.
+  <div class="center-container">
+    <div class="title">Connectez votre WhatsApp</div>
+    <div class="instruction">
+      Scannez ce QR code avec votre WhatsApp pour connecter votre numéro
     </div>
-    <div class="qrcode-wrapper" id="qrcode-wrapper">
+    <div id="qrcode-container">
       <div class="loader" id="loader"></div>
     </div>
-    <div class="error" id="error"></div>
-    <button class="btn" id="connectedBtn" disabled>C’est connecté&nbsp;!</button>
+    <div class="error-msg" id="error-msg" style="display:none;"></div>
+    <button class="btn" id="connect-btn" style="margin-top:9px;" disabled>C’est connecté&nbsp;!</button>
   </div>
   <script>
-    const qrcodeWrapper = document.getElementById('qrcode-wrapper');
-    const errorDiv = document.getElementById('error');
-    const btn = document.getElementById('connectedBtn');
+    const qrContainer = document.getElementById('qrcode-container');
+    const errorMsg = document.getElementById('error-msg');
+    const btn = document.getElementById('connect-btn');
     const loader = document.getElementById('loader');
 
-    function escapeHTML(s) {
-      return s.replace(/[&<>"']/g, function(m) {
+    function escapeHTML(str) {
+      return str.replace(/[&<>"']/g, function (m) {
         return ({
           '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
         })[m];
       });
     }
 
-    async function fetchQrCode() {
-      errorDiv.textContent = '';
+    async function loadQrCode() {
+      errorMsg.style.display = 'none';
       btn.disabled = true;
+      if (loader) loader.style.display = 'block';
 
-      const token = localStorage.getItem('jwt_token');
-      if (!token) {
-        showError('Non authentifié : veuillez vous reconnecter.');
-        loader?.remove();
+      const jwt = localStorage.getItem('jwt_token');
+      if (!jwt) {
+        qrContainer.innerHTML = '';
+        errorMsg.textContent = "Impossible de générer le QR code, veuillez réessayer plus tard.";
+        errorMsg.style.display = 'block';
         return;
       }
       try {
-        const response = await fetch('https://baguette-bureau-backend.onrender.com/whatsapp/qrcode', {
-          method: 'GET',
-          headers: {
-            'Authorization': 'Bearer ' + token
-          }
-        });
-
-        if (!response.ok) {
-          loader?.remove();
-          let msg = 'Échec lors de la récupération du QR code.';
-          try {
-            const data = await response.json();
-            if (data && data.error) msg = data.error;
-            else if(data && data.message) msg = data.message;
-          } catch(e) {}
-          showError(msg);
-          return;
+        const res = await fetch(
+          "https://baguette-bureau-backend.onrender.com/whatsapp/qrcode",
+          { method: "GET", headers: { "Authorization": `Bearer ${jwt}` } }
+        );
+        if (!res.ok) {
+          throw new Error();
         }
-        const data = await response.json();
-
-        if (!data || !data.qrcode) {
-          loader?.remove();
-          showError('Le QR code est indisponible pour le moment.');
-          return;
+        const data = await res.json();
+        if (data && data.qrcode) {
+          qrContainer.innerHTML = `<img src="data:image/png;base64,${escapeHTML(data.qrcode)}" alt="QR WhatsApp" class="qrcode">`;
+          btn.disabled = false;
+        } else {
+          throw new Error();
         }
-
-        // Insert QR code image
-        const img = document.createElement('img');
-        img.className = 'qrcode-img';
-        img.src = `data:image/png;base64,${escapeHTML(data.qrcode)}`;
-        img.alt = 'QR code WhatsApp';
-        // Clean previous (loader), then show image
-        qrcodeWrapper.innerHTML = '';
-        qrcodeWrapper.appendChild(img);
-        btn.disabled = false;
       } catch (e) {
-        loader?.remove();
-        showError('Impossible de rejoindre le serveur pour obtenir le QR code.');
+        qrContainer.innerHTML = '';
+        errorMsg.textContent = "Impossible de générer le QR code, veuillez réessayer plus tard.";
+        errorMsg.style.display = 'block';
+        btn.disabled = true;
       }
     }
 
-    function showError(msg) {
-      errorDiv.textContent = msg;
-      btn.disabled = true;
-      qrcodeWrapper.innerHTML = '';
-    }
-
-    btn.addEventListener('click', function() {
-      window.location.href = 'dashboard.html';
+    btn.addEventListener('click', () => {
+      window.location.href = "dashboard.html";
     });
 
-    fetchQrCode();
+    window.onload = loadQrCode;
   </script>
 </body>
 </html>
