@@ -4,59 +4,32 @@
     <meta charset="UTF-8">
     <title>Baguette & Bureau – Connectez votre WhatsApp</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-            background: #fff;
-        }
-        body {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            font-family: 'Segoe UI', Arial, sans-serif;
-        }
-        .container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 2rem 1.5rem;
-        }
-        h1 {
-            font-size: 1.5rem;
-            font-weight: 500;
-            margin-bottom: 2rem;
-            color: #222;
-            text-align: center;
-        }
-        #qrcode {
-            width: 220px;
-            height: 220px;
-            background: #f5f5f5;
-            border-radius: 10px;
-            object-fit: contain;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.05);
-            margin-bottom: 1.5rem;
-            display: none;
-        }
-        #error {
-            color: #b43d2c;
-            font-size: 1rem;
-            margin-top: 1rem;
-            min-height: 1.2em;
-            text-align: center;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@700&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
-        <h1>Connectez votre WhatsApp 📱</h1>
-        <img id="qrcode" src="" alt="QR Code WhatsApp">
-        <div id="error"></div>
-    </div>
+    <main>
+        <section class="bread-panel" style="margin-top: 48px;">
+            <h1 class="error-404-number" style="font-size:2.1em; margin-bottom:6px; letter-spacing:0.02em;">
+                Connectez votre WhatsApp <span aria-hidden="true">📱</span>
+            </h1>
+            <div class="section-intro" style="margin-top:0; font-size:1.05em; font-weight:400;">
+                Pour accéder à votre tableau de bord, scannez ce QR code depuis l’application WhatsApp sur votre téléphone.
+            </div>
+            <img id="qrcode" src="" alt="QR Code WhatsApp"
+                style="width:220px; height:220px; background:var(--gold,#f9d680); border-radius:18px; box-shadow:var(--shadow); object-fit:contain; display:none; margin:1.35em auto 0 auto;" />
+            <div id="error" class="error-intro" style="margin-top:1em; min-height:1.2em; color: #b43d2c; font-size:1.09em; font-weight:700; text-shadow:none;"></div>
+            <a class="cta-btn-link" href="/">
+                <button class="cta-btn" type="button" aria-label="Retour à l'accueil" style="margin-top:12px;">
+                    ⬅️ Retour à l’Accueil
+                </button>
+            </a>
+        </section>
+    </main>
+    <footer>
+        Fait avec <span class="footer-croissant" aria-hidden="true">🥐</span> par l'équipe <b>Boulangerie SaaS</b><br>
+        <small>Connexion WhatsApp sécurisée &amp; simple.</small>
+    </footer>
     <script>
         const QR_ENDPOINT = "http://localhost:8000/whatsapp/qrcode";
         const STATUS_ENDPOINT = "http://localhost:8000/whatsapp/status";
