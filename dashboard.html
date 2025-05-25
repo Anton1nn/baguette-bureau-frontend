@@ -4,175 +4,54 @@
   <meta charset="UTF-8">
   <title>Tableau de bord | Boulangerie SaaS</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    html, body {
-      margin: 0; padding: 0;
-      min-height: 100vh;
-      font-family: 'Montserrat', Arial, sans-serif;
-      background: linear-gradient(120deg, #fff8ed 0%, #ffe3ba 100%);
-      color: #63482a;
-    }
-    body {
-      display: flex; flex-direction: column; align-items: center;
-      min-height: 100vh;
-    }
-    header {
-      background: #fffefb;
-      box-shadow: 0 2px 16px #fde8b145;
-      width: 100vw;
-      padding: 16px 0;
-      margin-bottom: 24px;
-      text-align: center;
-    }
-    .logo-row {
-      display: flex; flex-direction: row;
-      align-items: center; justify-content: center;
-      gap: 14px;
-      margin-bottom: 4px;
-    }
-    .logo-row img { width: 42px; height: 42px; }
-    .client-name {
-      font-weight: 700;
-      color: #eca509;
-      font-size: 1.1em;
-      margin-top: 5px;
-    }
-    .dashboard-content {
-      min-width: 0;
-      background: #fffefc;
-      box-shadow: 0 6px 36px #f8e3b733;
-      border-radius: 17px;
-      padding: 22px 7vw 32px 7vw;
-      max-width: 620px;
-      width: 95vw;
-    }
-    h1 {
-      font-size: 1.54em;
-      margin-top: 0;
-      color: #bc7a27;
-    }
-    .status-row {
-      font-size: 1.08em;
-      padding: 10px 6px;
-      border-radius: 8px;
-      background: #fff6db;
-      margin-bottom: 18px; margin-top: 4px;
-      display: flex; align-items: center;
-      gap: 10px;
-    }
-    .status-online { color: #237a47; font-weight: 700;}
-    .status-offline { color: #ae3641; font-weight: 700;}
-    .table-wrap {
-      overflow-x: auto;
-      margin-top: 14px;
-      border-radius: 9px;
-      background: #fffbe9;
-      box-shadow: 0 2px 14px #e9d4b342;
-      padding: 8px;
-    }
-    table {
-      border-collapse: collapse;
-      font-size: 1em;
-      width: 100%;
-      min-width: 370px;
-    }
-    th, td {
-      text-align: left; 
-      padding: 8px 11px;
-    }
-    tr:nth-child(even) { background: #fff9ea; }
-    th {
-      background: #ffe3ba;
-      color: #a97c2f;
-      font-size: 1.06em;
-      font-weight: 600;
-      border-bottom: 2px solid #f6d59f;
-    }
-    .empty-row {
-      padding: 18px;
-      color: #bc7a27;
-      text-align: center;
-      font-style: italic;
-      opacity: 0.7;
-    }
-    .primary-btn {
-      display: inline-block;
-      margin: 2.2em auto 0 auto;
-      padding: 1em 2.1em;
-      font-size: 1.11em;
-      font-weight: 600;
-      color: #fff;
-      background: linear-gradient(90deg, #ef9100 40%, #f5d26b 100%);
-      border: none;
-      border-radius: 30px;
-      box-shadow: 0 2px 12px #ffe6b233;
-      cursor: pointer;
-      transition: background .17s, box-shadow .17s, color .12s;
-      text-decoration: none;
-      outline: none;
-      text-align: center;
-      min-width: 180px;
-    }
-    .primary-btn:hover, .primary-btn:focus {
-      background: linear-gradient(90deg,#ffbe4e 60%, #ef9100 100%);
-      color: #fff7e6;
-      box-shadow: 0 3px 16px #f7bb6855;
-    }
-    .loader {
-      display: inline-block; width: 36px; height: 36px;
-      border: 4px solid #ffeacb;
-      border-radius: 50%;
-      border-top: 4px solid #f3ae30;
-      animation: spin 0.85s linear infinite;
-      vertical-align: middle;
-      margin-right: 6px;
-    }
-    @keyframes spin { 100% { transform: rotate(360deg); } }
-    @media (max-width:600px) {
-      .dashboard-content {
-        padding: 13px 1vw 20px 1vw;
-      }
-      .logo-row img {
-        width:28px;height:28px;
-      }
-      table, th, td { font-size: 0.94em;}
-    }
-    @media (max-width:400px) {
-      .dashboard-content { padding: 6px 0 10px 0; }
-      .client-name { font-size: 1em; }
-    }
-  </style>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@700&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
+  <div class="clouds-bg">
+    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='266' height='74'><ellipse cx='100' cy='42' rx='88' ry='28' fill='%23fff5e9' /><ellipse cx='160' cy='30' rx='28' ry='22' fill='%23fff5e9' opacity='.84' /><ellipse cx='200' cy='48' rx='32' ry='15' fill='%23fff5e9' opacity='.73' /></svg>" class="cloud-1" aria-hidden="true">
+    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='218' height='69'><ellipse cx='90' cy='43' rx='69' ry='21' fill='%23fffaf1' /><ellipse cx='170' cy='31' rx='28' ry='15' fill='%23fffaf1' /></svg>" class="cloud-2" aria-hidden="true">
+    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='211' height='62'><ellipse cx='80' cy='31' rx='61' ry='18' fill='%23fff0dc' /><ellipse cx='170' cy='19' rx='32' ry='14' fill='%23fff0dc' /></svg>" class="cloud-3" aria-hidden="true">
+    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='37'><ellipse cx='41' cy='19' rx='35' ry='13' fill='%23fffefb' /></svg>" class="cloud-4" aria-hidden="true">
+  </div>
   <header>
     <div class="logo-row">
       <img src="static/images/logo_bb_.png" alt="Logo Boulangerie SaaS" />
-      <span style="font-size:1.2em; font-weight:800; color:#ef9100; font-family:'Montserrat',Arial,sans-serif;">Baguette &amp; Bureau</span>
+      <span style="font-size:1.2em; font-weight:800; color:#ef9100; font-family:'Quicksand','Montserrat',Arial,sans-serif;">Baguette &amp; Bureau</span>
     </div>
     <div class="client-name" id="clientName"></div>
   </header>
-  <div class="dashboard-content">
-    <h1>Bienvenue sur votre tableau de bord</h1>
-    <div class="status-row" id="waStatus"><span class="loader"></span>Vérification WhatsApp...</div>
-
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>Commande</th>
-            <th>Date</th>
-            <th>Client</th>
-            <th>Statut</th>
-          </tr>
-        </thead>
-        <tbody id="ordersTable">
-          <tr><td colspan="4" class="empty-row">Chargement des commandes...</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <a href="products.html" class="primary-btn">Passer une commande</a>
-  </div>
-
+  <main>
+    <section class="bread-panel" style="max-width:650px;width:97vw;padding-top:30px;padding-bottom:36px;">
+      <h1 style="font-family:'Quicksand', 'Montserrat', Arial, sans-serif; font-size:2.05em; text-shadow:0 2px 0 #fff8e3, 0 3px 33px #c97c5d44; color:#c97c5d; letter-spacing:0.03em; margin-top:0; margin-bottom:14px;">Bienvenue sur votre tableau de bord</h1>
+      <div class="status-row" id="waStatus" style="width:100%; box-sizing:border-box;">
+        <span class="loader"></span>Vérification WhatsApp...
+      </div>
+      <div class="table-wrap" style="margin-top:12px;background:#fff9ee;border-radius:12px;box-shadow:0 2px 22px #eddabb2a;">
+        <table>
+          <thead>
+            <tr>
+              <th style="font-family:'Montserrat',sans-serif;font-weight:700;">Commande</th>
+              <th style="font-family:'Montserrat',sans-serif;font-weight:700;">Date</th>
+              <th style="font-family:'Montserrat',sans-serif;font-weight:700;">Client</th>
+              <th style="font-family:'Montserrat',sans-serif;font-weight:700;">Statut</th>
+            </tr>
+          </thead>
+          <tbody id="ordersTable">
+            <tr>
+              <td colspan="4" class="empty-row" style="font-style:italic;opacity:.7;font-family:'Montserrat',sans-serif;">Chargement des commandes...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <a href="products.html" class="cta-btn-link" style="display:block;text-align:center;margin-top:2em;">
+        <button class="cta-btn" type="button">Passer une commande</button>
+      </a>
+    </section>
+  </main>
+  <footer>
+    Fait avec <span class="footer-croissant" aria-hidden="true">🥐</span> par l'équipe <b>Boulangerie SaaS</b>
+  </footer>
   <script>
     // --- Configuration backend
     const BASE_URL = window.location.origin.replace(/:\d+$/, ':8000');
