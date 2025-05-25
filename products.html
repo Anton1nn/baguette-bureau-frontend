@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <title>Baguette & Bureau - Gestion Produits</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+        :root {
+            --primary: #b8860b;
+            --background: #fbf9f5;
+            --card-bg: #fff;
+            --border: #ddd;
+            --success: #2d862d;
+            --error: #b22222;
+            --shadow: rgba(0,0,0,0.1);
+        }
+        body {
+            margin:0;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background);
+            color: #222;
+            padding: 1rem;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+        h1 {
+            text-align: center;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border-radius: 8px;
+            padding: 1rem 1.5rem 2rem;
+            box-shadow: 0 2px 6px var(--shadow);
+        }
+        label {
+            display: block;
+            margin: 1rem 0 0.4rem;
+            font-weight: 600;
+        }
+        select, input[type="text"] {
+            width: 100%;
+            padding: 0.6rem;
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        button {
+            margin-top: 1rem;
+            padding: 0.6rem;
+            width: 100%;
+            background-color: var(--primary);
+            color: #fff;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.25s;
+        }
+        button:hover {
+            background-color: #a47906;
+        }
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+            margin-top: 1rem;
+        }
+        li {
+            background: var(--background);
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            padding: 0.6rem 1rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1rem;
+        }
+        li button {
+            background: #b22222;
+            border: none;
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+        li button:hover {
+            background: #7a1616;
+        }
+        .message {
+            margin-top: 1rem;
+            padding: 0.6rem 1rem;
+            border-radius: 5px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            display: none;
+        }
+        .message.success {
+            background-color: #e6f4ea;
+            color: var(--success);
+            border: 1px solid var(--success);
+        }
+        .message.error {
+            background-color: #fbeaea;
+            color: var(--error);
+            border: 1px solid var(--error);
+        }
+        @media (max-width: 400px) {
+            .container {
+                padding: 1rem 1rem 1.5rem;
+            }
+            button {
+                font-size: 1rem;
+                padding: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Gestion des produits par client</h1>
+    <div class="container" role="main">
+        <label for="clientSelect">Choisir un client</label>
+        <select id="clientSelect" aria-label="Sélection du client">
+            <option value="">-- Chargement des clients... --</option>
+        </select>
+
+        <section id="productsSection" style="display:none;">
+            <label for="newProductInput">Ajouter un nouveau produit</label>
+            <input type="text" id="newProductInput" placeholder="Nom du produit" autocomplete="off" aria-label="Nom du produit à ajouter"/>
+            <button id="addProductBtn">Ajouter le produit</button>
+
+            <ul id="productsList" aria-live="polite" aria-relevant="additions removals">
+                <!-- Produits listés ici -->
+            </ul>
+        </section>
+
+        <div id="message" class="message" role="alert" aria-live="assertive"></div>
+    </div>
+
+<script>
+    const clientSelect = document.getElementById('clientSelect');
+    const productsSection = document.getElementById('productsSection');
+    const productsList = document.getElementById('productsList');
+    const addProductBtn = document.getElementById('addProductBtn');
+    const newProductInput = document.getElementById('newProductInput');
+    const messageBox = document.getElementById('message');
+
+    let currentClientId = null;
+
+    // Utilitaire pour afficher message
+    function showMessage(text, type='success') {
+        messageBox.textContent = text;
+        messageBox.className = 'message ' + (type==='error' ? 'error' : 'success');
+        messageBox.style.display = 'block';
+        setTimeout(() => {
+            messageBox.style.display = 'none';
+        }, 3500);
+    }
+
+    // Récupérer is token JWT
+    function getToken() {
+        return localStorage.getItem("token") || "";
+    }
+
+    // Requête API générique avec gestion erreurs
+    async function fetchWithAuth(url, options = {}) {
+        options.headers = options.headers || {};
+        options.headers['Authorization'] = 'Bearer ' + getToken();
+        
+        try {
+            const resp = await fetch(url, options);
+            if (!resp.ok) {
+                let errText = await resp.text();
+                try {
+                    const errJson = JSON.parse(errText);
+                    errText = errJson.detail || errText;
+                } catch { /* ignore json parse error */ }
+                throw new Error(errText || `HTTP ${resp.status}`);
+            }
+            return await resp.json();
+        } catch (e) {
+            throw new Error(e.message || "Erreur réseau");
+        }
+    }
+
+    // Charger la liste des clients
+    async function loadClients() {
+        try {
+            const clients = await fetchWithAuth('/clients/');
+            clientSelect.innerHTML = '<option value="">-- Sélectionnez un client --</option>';
+            clients.forEach(c => {
+                const opt = document.createElement('option');
+                opt.value = c.id;
+                opt.textContent = c.name + (c.email ? ` (${c.email})` : '');
+                clientSelect.appendChild(opt);
+            });
+        } catch (e) {
+            clientSelect.innerHTML = '<option value="">Erreur chargement clients</option>';
+            showMessage("Erreur chargement clients : " + e.message, "error");
+        }
+    }
+
+    // Charger les produits du client sélectionné
+    async function loadProducts(clientId) {
+        if (!clientId) {
+            productsSection.style.display = 'none';
+            productsList.innerHTML = '';
+            return;
+        }
+        try {
+            productsSection.style.display = 'block';
+            productsList.innerHTML = '<li>Chargement...</li>';
+            const products = await fetchWithAuth(`/products/${clientId}`);
+            if (products.length === 0) {
+                productsList.innerHTML = '<li><em>Aucun produit pour ce client.</em></li>';
+                return;
+            }
+            // Affichage
+            productsList.innerHTML = '';
+            products.forEach(p => {
+                const li = document.createElement('li');
+                li.textContent = p.name;
+                const delBtn = document.createElement('button');
+                delBtn.textContent = 'Supprimer';
+                delBtn.setAttribute('aria-label', `Supprimer le produit ${p.name}`);
+                delBtn.addEventListener('click', () => deleteProduct(p.id));
+                li.appendChild(delBtn);
+                productsList.appendChild(li);
+            });
+        } catch (e) {
+            productsList.innerHTML = '<li>Erreur chargement produits</li>';
+            showMessage("Erreur chargement produits : " + e.message, "error");
+        }
+    }
+
+    // Ajouter un produit
+    async function addProduct() {
+        const name = newProductInput.value.trim();
+        if (!name) {
+            showMessage("Le nom du produit ne peut pas être vide.", "error");
+            return;
+        }
+        if (!currentClientId) {
+            showMessage("Veuillez sélectionner un client.", "error");
+            return;
+        }
+        try {
+            await fetchWithAuth(`/products/${currentClientId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name })
+            });
+            showMessage(`Produit "${name}" ajouté.`);
+            newProductInput.value = '';
+            loadProducts(currentClientId);
+        } catch (e) {
+            showMessage("Erreur ajout produit : " + e.message, "error");
+        }
+    }
+
+    // Supprimer un produit
+    async function deleteProduct(productId) {
+        if (!confirm("Voulez-vous vraiment supprimer ce produit ?")) return;
+        try {
+            await fetchWithAuth(`/products/${productId}`, {
+                method: 'DELETE'
+            });
+            showMessage("Produit supprimé.");
+            loadProducts(currentClientId);
+        } catch (e) {
+            showMessage("Erreur suppression produit : " + e.message, "error");
+        }
+    }
+
+    // Événements
+    clientSelect.addEventListener('change', () => {
+        currentClientId = clientSelect.value;
+        loadProducts(currentClientId);
+    });
+
+    addProductBtn.addEventListener('click', addProduct);
+
+    // Chargement initial
+    loadClients();
+</script>
+</body>
+</html>

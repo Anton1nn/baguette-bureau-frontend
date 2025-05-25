@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Tableau de bord | Boulangerie SaaS</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    html, body {
+      margin: 0; padding: 0;
+      min-height: 100vh;
+      font-family: 'Montserrat', Arial, sans-serif;
+      background: linear-gradient(120deg, #fff8ed 0%, #ffe3ba 100%);
+      color: #63482a;
+    }
+    body {
+      display: flex; flex-direction: column; align-items: center;
+      min-height: 100vh;
+    }
+    header {
+      background: #fffefb;
+      box-shadow: 0 2px 16px #fde8b145;
+      width: 100vw;
+      padding: 16px 0;
+      margin-bottom: 24px;
+      text-align: center;
+    }
+    .logo-row {
+      display: flex; flex-direction: row;
+      align-items: center; justify-content: center;
+      gap: 14px;
+      margin-bottom: 4px;
+    }
+    .logo-row img { width: 42px; height: 42px; }
+    .client-name {
+      font-weight: 700;
+      color: #eca509;
+      font-size: 1.1em;
+      margin-top: 5px;
+    }
+    .dashboard-content {
+      min-width: 0;
+      background: #fffefc;
+      box-shadow: 0 6px 36px #f8e3b733;
+      border-radius: 17px;
+      padding: 22px 7vw 32px 7vw;
+      max-width: 620px;
+      width: 95vw;
+    }
+    h1 {
+      font-size: 1.54em;
+      margin-top: 0;
+      color: #bc7a27;
+    }
+    .status-row {
+      font-size: 1.08em;
+      padding: 10px 6px;
+      border-radius: 8px;
+      background: #fff6db;
+      margin-bottom: 18px; margin-top: 4px;
+      display: flex; align-items: center;
+      gap: 10px;
+    }
+    .status-online { color: #237a47; font-weight: 700;}
+    .status-offline { color: #ae3641; font-weight: 700;}
+    .table-wrap {
+      overflow-x: auto;
+      margin-top: 14px;
+      border-radius: 9px;
+      background: #fffbe9;
+      box-shadow: 0 2px 14px #e9d4b342;
+      padding: 8px;
+    }
+    table {
+      border-collapse: collapse;
+      font-size: 1em;
+      width: 100%;
+      min-width: 370px;
+    }
+    th, td {
+      text-align: left; 
+      padding: 8px 11px;
+    }
+    tr:nth-child(even) { background: #fff9ea; }
+    th {
+      background: #ffe3ba;
+      color: #a97c2f;
+      font-size: 1.06em;
+      font-weight: 600;
+      border-bottom: 2px solid #f6d59f;
+    }
+    .empty-row {
+      padding: 18px;
+      color: #bc7a27;
+      text-align: center;
+      font-style: italic;
+      opacity: 0.7;
+    }
+    .primary-btn {
+      display: inline-block;
+      margin: 2.2em auto 0 auto;
+      padding: 1em 2.1em;
+      font-size: 1.11em;
+      font-weight: 600;
+      color: #fff;
+      background: linear-gradient(90deg, #ef9100 40%, #f5d26b 100%);
+      border: none;
+      border-radius: 30px;
+      box-shadow: 0 2px 12px #ffe6b233;
+      cursor: pointer;
+      transition: background .17s, box-shadow .17s, color .12s;
+      text-decoration: none;
+      outline: none;
+      text-align: center;
+      min-width: 180px;
+    }
+    .primary-btn:hover, .primary-btn:focus {
+      background: linear-gradient(90deg,#ffbe4e 60%, #ef9100 100%);
+      color: #fff7e6;
+      box-shadow: 0 3px 16px #f7bb6855;
+    }
+    .loader {
+      display: inline-block; width: 36px; height: 36px;
+      border: 4px solid #ffeacb;
+      border-radius: 50%;
+      border-top: 4px solid #f3ae30;
+      animation: spin 0.85s linear infinite;
+      vertical-align: middle;
+      margin-right: 6px;
+    }
+    @keyframes spin { 100% { transform: rotate(360deg); } }
+    @media (max-width:600px) {
+      .dashboard-content {
+        padding: 13px 1vw 20px 1vw;
+      }
+      .logo-row img {
+        width:28px;height:28px;
+      }
+      table, th, td { font-size: 0.94em;}
+    }
+    @media (max-width:400px) {
+      .dashboard-content { padding: 6px 0 10px 0; }
+      .client-name { font-size: 1em; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo-row">
+      <img src="static/images/logo_bb_.png" alt="Logo Boulangerie SaaS" />
+      <span style="font-size:1.2em; font-weight:800; color:#ef9100; font-family:'Montserrat',Arial,sans-serif;">Baguette &amp; Bureau</span>
+    </div>
+    <div class="client-name" id="clientName"></div>
+  </header>
+  <div class="dashboard-content">
+    <h1>Bienvenue sur votre tableau de bord</h1>
+    <div class="status-row" id="waStatus"><span class="loader"></span>Vérification WhatsApp...</div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Commande</th>
+            <th>Date</th>
+            <th>Client</th>
+            <th>Statut</th>
+          </tr>
+        </thead>
+        <tbody id="ordersTable">
+          <tr><td colspan="4" class="empty-row">Chargement des commandes...</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <a href="products.html" class="primary-btn">Passer une commande</a>
+  </div>
+
+  <script>
+    // --- Configuration backend
+    const BASE_URL = window.location.origin.replace(/:\d+$/, ':8000');
+    const getWhatsappStatusUrl = (client_id) => `${BASE_URL}/whatsapp/status/${client_id}`;
+    const getOrdersUrl = `${BASE_URL}/orders/history`;
+    // -- Variables utilisateur
+    const jwt = localStorage.getItem('jwt_token');
+    const client_id = localStorage.getItem('client_id');
+    let client_name = localStorage.getItem('client_name'); // Optionnel, à mettre au login si possible
+
+    // -- Affichage du nom client si trouvé
+    if (client_name) {
+      document.getElementById('clientName').textContent = `Client : ${client_name}`;
+    } else if (client_id) {
+      document.getElementById('clientName').textContent = `Client ID : ${client_id}`;
+    } else {
+      document.getElementById('clientName').textContent = '';
+    }
+
+    // -- Utils
+    function showWaStatus(status) {
+      const st = document.getElementById('waStatus');
+      if (status === "authenticated") {
+        st.innerHTML = '<span class="status-online">WhatsApp connecté ✅</span>';
+      } else if (status === "not_authenticated") {
+        st.innerHTML = '<span class="status-offline">Non connecté ❌</span>';
+      } else if (status === "loading") {
+        st.innerHTML = `<span class="loader"></span>Vérification WhatsApp...`;
+      } else {
+        st.innerHTML = '<span class="status-offline">Erreur connexion WhatsApp</span>';
+      }
+    }
+
+    function htmlEscape(text) {
+      return text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    // ---- Vérification WhatsApp
+    async function fetchWaStatus() {
+      if (!client_id) {
+        showWaStatus('error');
+        return;
+      }
+      showWaStatus('loading');
+      try {
+        const res = await fetch(getWhatsappStatusUrl(client_id));
+        const data = await res.json();
+        if (data.status === "authenticated") {
+          showWaStatus("authenticated");
+        } else {
+          showWaStatus("not_authenticated");
+        }
+      } catch (e) {
+        showWaStatus("error");
+      }
+    }
+
+    // ---- Affichage commandes
+    async function fetchOrders() {
+      const tbody = document.getElementById('ordersTable');
+      tbody.innerHTML = `<tr><td colspan="4" class="empty-row"><span class="loader"></span>Chargement des commandes...</td></tr>`;
+      if (!jwt) {
+        tbody.innerHTML = `<tr><td colspan="4" class="empty-row">Non authentifié. <a href="login.html">Se connecter</a></td></tr>`;
+        return;
+      }
+      try {
+        const res = await fetch(getOrdersUrl, {
+          headers: { Authorization: 'Bearer ' + jwt }
+        });
+        if (!res.ok) throw new Error();
+        const data = await res.json();
+        if (!data.orders || data.orders.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="4" class="empty-row">Aucune commande pour l’instant.</td></tr>`;
+          return;
+        }
+        tbody.innerHTML = data.orders.map(order => `
+            <tr>
+              <td>${htmlEscape(order.id || order.num || "Commande")}</td>
+              <td>${htmlEscape(order.date || order.created_at || "-")}</td>
+              <td>${htmlEscape(order.client || order.client_name || "-")}</td>
+              <td>${htmlEscape(order.status || order.statut || "-")}</td>
+            </tr>
+          `).join('');
+      } catch (e) {
+        tbody.innerHTML = `<tr><td colspan="4" class="empty-row">Erreur lors du chargement des commandes.</td></tr>`;
+      }
+    }
+
+    // --------- Initialisation
+    document.addEventListener('DOMContentLoaded', () => {
+      fetchWaStatus();
+      fetchOrders();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Baguette & Bureau – Connectez votre WhatsApp</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            background: #fff;
+        }
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem 1.5rem;
+        }
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 500;
+            margin-bottom: 2rem;
+            color: #222;
+            text-align: center;
+        }
+        #qrcode {
+            width: 220px;
+            height: 220px;
+            background: #f5f5f5;
+            border-radius: 10px;
+            object-fit: contain;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+            margin-bottom: 1.5rem;
+            display: none;
+        }
+        #error {
+            color: #b43d2c;
+            font-size: 1rem;
+            margin-top: 1rem;
+            min-height: 1.2em;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Connectez votre WhatsApp 📱</h1>
+        <img id="qrcode" src="" alt="QR Code WhatsApp">
+        <div id="error"></div>
+    </div>
+    <script>
+        const QR_ENDPOINT = "http://localhost:8000/whatsapp/qrcode";
+        const STATUS_ENDPOINT = "http://localhost:8000/whatsapp/status";
+        const DASHBOARD_URL = "dashboard.html";
+
+        const qrcodeImg = document.getElementById('qrcode');
+        const errorDiv = document.getElementById('error');
+
+        // Récupère et affiche le QR code
+        async function fetchQRCode() {
+            try {
+                errorDiv.textContent = "";
+                const resp = await fetch(QR_ENDPOINT, {cache: "no-store"});
+                if (!resp.ok) throw new Error("Erreur réseau");
+                const data = await resp.json();
+                if (data.qr) {
+                    qrcodeImg.src = data.qr;
+                    qrcodeImg.style.display = "block";
+                } else {
+                    throw new Error("QR code non disponible.");
+                }
+            } catch (e) {
+                qrcodeImg.style.display = "none";
+                errorDiv.textContent = "Impossible de récupérer le QR code.";
+            }
+        }
+
+        // Vérifie le statut de connexion WhatsApp
+        async function checkStatusAndRedirect() {
+            try {
+                const resp = await fetch(STATUS_ENDPOINT, {cache: "no-store"});
+                if (!resp.ok) return;
+                const data = await resp.json();
+                if (data.status && data.status === "CONNECTED") {
+                    window.location.href = DASHBOARD_URL;
+                }
+            } catch (e) {
+                // Silencieusement ignorer
+            }
+        }
+
+        // Initialisation
+        window.addEventListener('DOMContentLoaded', () => {
+            fetchQRCode();
+            // Vérifie le statut toutes les 3 secondes
+            setInterval(checkStatusAndRedirect, 3000);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription – Baguette & Bureau</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            min-height: 100vh;
+            background: #faf9f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+            color: #222;
+        }
+        .container {
+            background: #fff;
+            padding: 2.5rem 2rem;
+            border-radius: 18px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.05);
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            letter-spacing: -1px;
+        }
+        p {
+            color: #444;
+            margin-bottom: 2rem;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+        label {
+            text-align: left;
+            font-weight: 500;
+            margin-bottom: 0.3rem;
+            display: block;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 0.7rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 7px;
+            font-size: 1rem;
+            background: #faf9f6;
+            transition: border 0.15s;
+        }
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="password"]:focus {
+            border-color: #e7b97a;
+            outline: none;
+        }
+        .btn {
+            padding: 0.9rem 0;
+            background: #e7b97a;
+            color: #222;
+            font-size: 1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+        .btn:hover, .btn:focus {
+            background: #d9a95f;
+        }
+        .error-message {
+            color: #b94a48;
+            background: #fbeeea;
+            border: 1px solid #f5c6cb;
+            border-radius: 6px;
+            padding: 0.7rem;
+            margin-bottom: 1rem;
+            font-size: 0.98rem;
+            display: none;
+        }
+        @media (max-width: 500px) {
+            .container {
+                padding: 1.2rem 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Baguette &amp; Bureau 🥖</h1>
+        <p>Inscrivez-vous pour automatiser les commandes B2B de votre boulangerie artisanale.</p>
+        <div id="error" class="error-message"></div>
+        <form id="register-form" autocomplete="off">
+            <div>
+                <label for="name">Nom</label>
+                <input type="text" id="name" name="name" required autocomplete="name">
+            </div>
+            <div>
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required autocomplete="email">
+            </div>
+            <div>
+                <label for="password">Mot de passe</label>
+                <input type="password" id="password" name="password" required minlength="6" autocomplete="new-password">
+            </div>
+            <button type="submit" class="btn">Créer mon compte</button>
+        </form>
+    </div>
+    <script>
+        const form = document.getElementById('register-form');
+        const errorDiv = document.getElementById('error');
+
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            errorDiv.style.display = 'none';
+            errorDiv.textContent = '';
+
+            const name = form.name.value.trim();
+            const email = form.email.value.trim();
+            const password = form.password.value;
+
+            if (!name || !email || !password) {
+                errorDiv.textContent = "Veuillez remplir tous les champs.";
+                errorDiv.style.display = 'block';
+                return;
+            }
+
+            try {
+                const response = await fetch('http://localhost:8000/auth/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ name, email, password })
+                });
+
+                if (response.ok) {
+                    window.location.href = 'configure.html';
+                } else {
+                    const data = await response.json().catch(() => ({}));
+                    errorDiv.textContent = data.detail || "Erreur lors de l'inscription. Veuillez réessayer.";
+                    errorDiv.style.display = 'block';
+                }
+            } catch (err) {
+                errorDiv.textContent = "Impossible de contacter le serveur. Veuillez réessayer plus tard.";
+                errorDiv.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>
